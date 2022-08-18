@@ -2,9 +2,7 @@ package ru.job4j.accident.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "rule")
@@ -15,8 +13,8 @@ public class Rule {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany (mappedBy = "rules")
-    List<Accident> accidents = new ArrayList<>();
+    @ManyToMany(mappedBy = "rules")
+    Set<Accident> accidents = new HashSet<>();
 
     public Rule() {
     }
@@ -32,11 +30,11 @@ public class Rule {
         return rule;
     }
 
-    public List<Accident> getAccidents() {
+    public Set<Accident> getAccidents() {
         return accidents;
     }
 
-    public void setAccidents(List<Accident> accidents) {
+    public void setAccidents(Set<Accident> accidents) {
         this.accidents = accidents;
     }
 

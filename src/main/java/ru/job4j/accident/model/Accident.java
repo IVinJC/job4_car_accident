@@ -2,10 +2,7 @@ package ru.job4j.accident.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "accident")
@@ -22,7 +19,7 @@ public class Accident {
             joinColumns = @JoinColumn(name = "accident_id"),
             inverseJoinColumns = @JoinColumn(name = "rule_id")
     )
-    private List<Rule> rules = new ArrayList<>();
+    private Set<Rule> rules = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "id_type")
     private Type type;
@@ -37,11 +34,11 @@ public class Accident {
         this.address = address;
     }
 
-    public List<Rule> getRules() {
+    public Set<Rule> getRules() {
         return rules;
     }
 
-    public void setRules(List<Rule> rules) {
+    public void setRules(Set<Rule> rules) {
         this.rules = rules;
     }
 

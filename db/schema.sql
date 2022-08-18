@@ -10,13 +10,13 @@ CREATE TABLE accident
 CREATE TABLE rule
 (
     id   serial primary key,
-    name varchar(2000)
+    name varchar(2000) unique not null
 );
 
 CREATE TABLE type
 (
     id   serial primary key,
-    name varchar(2000)
+    name varchar(2000) unique not null
 );
 
 CREATE TABLE accident_rule
