@@ -13,6 +13,7 @@ import java.util.Set;
 
 @Repository
 public class AccidentJdbcTemplate {
+
     private final JdbcTemplate jdbc;
     private final TypeJdbcTemplate typeJdbcTemplate;
     private final RuleJdbcTemplate ruleJdbcTemplate;
