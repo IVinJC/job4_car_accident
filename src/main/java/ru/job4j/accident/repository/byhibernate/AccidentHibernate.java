@@ -39,29 +39,27 @@ public class AccidentHibernate {
 
     public List<Accident> findAll() {
         return tx(session -> session.createQuery(""
-                + "select distinct c from Accident c join fetch c.rule join fetch c.type", Accident.class).list());
+                + "select distinct c from Accident c join fetch c.rules", Accident.class).list());
     }
 
     public Accident findById(int id) {
-        return (Accident) tx(session -> session.createQuery("from Accident r where r.id = :fId")
+        return (Accident) tx(session -> session.createQuery(
+                "select distinct c from Accident c join fetch c.rules where c.id = :fId")
                 .setParameter("fId", id)
                 .uniqueResult());
     }
 
     public Accident update(Accident accident, int id) {
-        return tx(session -> session.createQuery("update Accident r set "
-                        + "r.name = :fName,"
-                        + "r.text = :fText,"
-                        + "r.address = :fAddress,"
-                        + "r.rule = :fRule,"
-                        + "r.type = :fType"
-                        + " where r.id = :fId", Accident.class)
-                .setParameter("fName", accident.getName())
-                .setParameter("fText", accident.getText())
-                .setParameter("fAddress", accident.getAddress())
-                .setParameter("fRule", accident.getRule())
-                .setParameter("fType", accident.getType())
+
+        Accident accidentWasUpdated = tx(session -> session.createQuery(
+                "select distinct a from Accident a join fetch a.rules where a.id = :fId",
+                Accident.class)
                 .setParameter("fId", id)
                 .uniqueResult());
+        accidentWasUpdated.setName(accident.getName());
+        accidentWasUpdated.setText(accident.getText());
+        accidentWasUpdated.setRules(accident.getRules());
+        accidentWasUpdated.setType(accident.getType());
+        return (Accident) tx(session -> session.save(accidentWasUpdated));
     }
 }

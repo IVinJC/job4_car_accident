@@ -1,14 +1,22 @@
 package ru.job4j.accident.model;
+
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
 @Entity
 @Table(name = "rule")
 public class Rule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "name")
     private String name;
+
+    @ManyToMany (mappedBy = "rules")
+    List<Accident> accidents = new ArrayList<>();
 
     public Rule() {
     }
@@ -22,6 +30,14 @@ public class Rule {
         rule.id = id;
         rule.name = name;
         return rule;
+    }
+
+    public List<Accident> getAccidents() {
+        return accidents;
+    }
+
+    public void setAccidents(List<Accident> accidents) {
+        this.accidents = accidents;
     }
 
     public int getId() {

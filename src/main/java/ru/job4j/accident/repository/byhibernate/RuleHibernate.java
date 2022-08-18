@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import ru.job4j.accident.model.Accident;
 import ru.job4j.accident.model.Rule;
 
 import java.util.List;
@@ -47,9 +48,13 @@ public class RuleHibernate {
     }
 
     public Rule update(Rule rule, int id) {
-        return tx(session -> (Rule) session.createQuery("update Rule r set r.name = :fName where r.id = :fId", Rule.class)
-                .setParameter("fName", rule.getName())
+        Rule ruleWasUpdated = tx(session -> session.createQuery(
+                        "select distinct r from Rule r join fetch r.accidents where r.id = :fId",
+                        Rule.class)
                 .setParameter("fId", id)
                 .uniqueResult());
+        ruleWasUpdated.setName(rule.getName());
+        ruleWasUpdated.setAccidents(rule.getAccidents());
+        return (Rule) tx(session -> session.save(ruleWasUpdated));
     }
 }
