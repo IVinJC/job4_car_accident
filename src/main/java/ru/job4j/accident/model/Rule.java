@@ -14,7 +14,7 @@ public class Rule {
     private String name;
 
     @ManyToMany(mappedBy = "rules")
-    Set<Accident> accidents = new HashSet<>();
+    private Set<Accident> accidents = new HashSet<>();
 
     public Rule() {
     }

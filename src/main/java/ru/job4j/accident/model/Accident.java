@@ -21,7 +21,7 @@ public class Accident {
     )
     private Set<Rule> rules = new HashSet<>();
     @ManyToOne
-    @JoinColumn(name = "id_type")
+    @JoinColumn(name = "type_id", referencedColumnName = "id")
     private Type type;
 
     public Accident() {

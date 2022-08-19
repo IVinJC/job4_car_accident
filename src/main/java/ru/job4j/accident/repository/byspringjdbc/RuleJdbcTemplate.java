@@ -46,6 +46,7 @@ public class RuleJdbcTemplate {
                     Rule rule = new Rule();
                     rule.setId(rs.getInt("id"));
                     rule.setName(rs.getString("name"));
+                    rule.setAccidents(new HashSet<>(accidentJdbcTemplate.findAccidentsByRuleId(rule.getId())));
                     return rule;
                 });
     }
@@ -57,6 +58,13 @@ public class RuleJdbcTemplate {
                     preparedStatement.setInt(2, rule.getId());
                 });
         rule.setId(id);
+        jdbc.update("delete from accident_rule where rule_id = ?",
+                rule.getId());
+        for (Accident accident : rule.getAccidents()) {
+            jdbc.update("insert into accident_rule(accident_id, rule_id) values(?, ?)",
+                    accident.getId(),
+                    rule.getId());
+        }
         return rule;
     }
 

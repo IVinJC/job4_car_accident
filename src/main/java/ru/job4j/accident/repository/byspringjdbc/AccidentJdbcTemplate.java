@@ -77,6 +77,8 @@ public class AccidentJdbcTemplate {
                     preparedStatement.setInt(5, accident.getId());
                 });
         accident.setId(id);
+        jdbc.update("delete from accident_rule where accident_id = ?",
+                accident.getId());
         for (Rule rule : accident.getRules()) {
             jdbc.update("insert into accident_rule(accident_id, rule_id) values(?, ?)",
                     accident.getId(),
