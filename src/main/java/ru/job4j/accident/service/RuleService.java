@@ -8,6 +8,7 @@ import ru.job4j.accident.repository.RuleRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RuleService {
@@ -29,7 +30,7 @@ public class RuleService {
     }
 
     public Rule findById(int id) {
-        return ruleRepository.findById(id).get();
+        return ruleRepository.findById(id).orElse(null);
     }
 
     public Rule update(Rule rule, int id) {

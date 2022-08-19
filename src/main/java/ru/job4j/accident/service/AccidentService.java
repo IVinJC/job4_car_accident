@@ -3,32 +3,36 @@ package ru.job4j.accident.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.job4j.accident.model.Accident;
-import ru.job4j.accident.repository.bymemory.AccidentMem;
+import ru.job4j.accident.repository.AccidentRepository;
 
 import java.util.Collection;
+import java.util.stream.StreamSupport;
 
 @Service
 public class AccidentService {
-    private final AccidentMem accidentMem;
+    private final AccidentRepository accidentRepository;
     @Autowired
-    public AccidentService(AccidentMem accidentMem) {
-        this.accidentMem = accidentMem;
+    public AccidentService(AccidentRepository accidentRepository) {
+        this.accidentRepository = accidentRepository;
     }
 
-
     public Collection<Accident> findAll() {
-        return accidentMem.findAll();
+        return StreamSupport
+                .stream(accidentRepository.findAll()
+                        .spliterator(), false)
+                .toList();
     }
 
     public Accident add(Accident accident) {
-        return accidentMem.add(accident);
+        return accidentRepository.save(accident);
     }
 
     public Accident findById(int id) {
-        return accidentMem.findById(id);
+        return accidentRepository.findById(id).orElse(null);
     }
 
     public Accident update(Accident accident, int id) {
-        return accidentMem.update(accident, id);
+        accident.setId(id);
+        return accidentRepository.save(accident);
     }
 }
