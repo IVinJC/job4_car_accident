@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.accident.model.Accident;
-import ru.job4j.accident.model.Rule;
-import ru.job4j.accident.model.Type;
 import ru.job4j.accident.service.AccidentService;
 import ru.job4j.accident.service.RuleService;
 import ru.job4j.accident.service.TypeService;
@@ -31,8 +29,8 @@ public class AccidentController {
 
     @GetMapping("/")
     public String accidents(Model model) {
-        /*model.addAttribute("accidents", accidentService.findAll());*/
-        return "ind";
+        model.addAttribute("accidents", accidentService.findAll());
+        return "index";
     }
     @GetMapping("/create")
     public String create(Model model) {
